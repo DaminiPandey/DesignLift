@@ -12,7 +12,7 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.{js,jsx}',
     ],
-
+    darkMode: "class",
     theme: {
         container: {
             center: true,
