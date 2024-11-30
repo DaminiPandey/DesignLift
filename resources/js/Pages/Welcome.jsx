@@ -57,9 +57,14 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
                         <main className="flex-1 flex items-center justify-center">
                             <div className="h-[40rem] w-full bg-black flex flex-col items-center justify-center overflow-hidden rounded-md">
-                                <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
+                                {/* <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center text-white relative z-20">
                                     Codewiser
-                                </h1>
+                                </h1> */}
+                                <div className="relative bg-clip-text text-transparent bg-no-repeat bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 py-4">
+                                    <h1 className="md:text-7xl text-3xl lg:text-9xl font-bold text-center">
+                                        Codewiser
+                                    </h1>
+                                </div>
                                 <div className="w-[40rem] h-40 relative">
                                     {/* Gradients */}
                                     <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent h-[2px] w-3/4 blur-sm" />
@@ -71,7 +76,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     <SparklesCore
                                         background="transparent"
                                         minSize={0.4}
-                                        maxSize={1}
+                                        maxSize={2}
                                         particleDensity={1200}
                                         className="w-full h-full"
                                         particleColor="#FFFFFF"
