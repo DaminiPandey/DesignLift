@@ -1,18 +1,87 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector, useDispatch } from 'react-redux'
-import { 
-    setGithubUrl, 
-    startAnalysis, 
-    analysisSuccess, 
-    analysisError 
-} from '@/store/slices/analysisSlice'
+import { useSelector, useDispatch } from "react-redux";
+import {
+    setGithubUrl,
+    startAnalysis,
+    analysisSuccess,
+    analysisError,
+} from "@/store/slices/analysisSlice";
+import { Switch } from "@headlessui/react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 
 export default function Dashboard() {
-    const dispatch = useDispatch()
-    const { githubUrl, loading, analysis, error } = useSelector((state) => state.analysis)
+    const dispatch = useDispatch();
+    const { githubUrl, loading, analysis, error } = useSelector(
+        (state) => state.analysis
+    );
+    const [branches, setBranches] = useState([]);
+    const [selectedBranch, setSelectedBranch] = useState(null);
+    const [branchAnalysis, setBranchAnalysis] = useState({});
+    const [showBranches, setShowBranches] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [analyzingBranch, setAnalyzingBranch] = useState(null);
+    const branchesPerPage = 10;
+
+    useEffect(() => {
+        const fetchBranches = async () => {
+            if (!githubUrl) return;
+
+            try {
+                const urlParts = githubUrl
+                    .replace("https://github.com/", "")
+                    .replace(".git", "")
+                    .split("/");
+
+                if (urlParts.length !== 2) return;
+
+                const [owner, repo] = urlParts;
+                const response = await axios.get(
+                    `https://api.github.com/repos/${owner}/${repo}/branches`,
+                    {
+                        headers: {
+                            Accept: "application/vnd.github.v3+json",
+                        },
+                    }
+                );
+
+                setBranches(response.data);
+            } catch (error) {
+                console.error("Failed to fetch branches:", error);
+            }
+        };
+
+        fetchBranches();
+    }, [githubUrl]);
+
+    const analyzeBranch = async (branchName) => {
+        setSelectedBranch(branchName);
+        setAnalyzingBranch(branchName);
+        try {
+            const urlParts = githubUrl
+                .replace("https://github.com/", "")
+                .replace(".git", "")
+                .split("/");
+
+            const [owner, repo] = urlParts;
+            const response = await axios.post("/analyze", {
+                repository_name: `${owner}/${repo}`,
+                branch: branchName,
+            });
+
+            setBranchAnalysis({
+                ...branchAnalysis,
+                [branchName]: response.data.analysis,
+            });
+
+            window.location.href = `/${branchName}/stats`;
+        } catch (error) {
+            console.error("Failed to analyze branch:", error);
+            setAnalyzingBranch(null);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -39,9 +108,19 @@ export default function Dashboard() {
 
             dispatch(analysisSuccess(response.data.analysis));
         } catch (error) {
-            dispatch(analysisError(error.response?.data?.message || error.message));
+            dispatch(
+                analysisError(error.response?.data?.message || error.message)
+            );
         }
     };
+
+    const indexOfLastBranch = currentPage * branchesPerPage;
+    const indexOfFirstBranch = indexOfLastBranch - branchesPerPage;
+    const currentBranches = branches.slice(
+        indexOfFirstBranch,
+        indexOfLastBranch
+    );
+    const totalPages = Math.ceil(branches.length / branchesPerPage);
 
     return (
         <AuthenticatedLayout
@@ -73,7 +152,11 @@ export default function Dashboard() {
                                             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                             placeholder="https://github.com/owner/repository"
                                             value={githubUrl}
-                                            onChange={(e) => dispatch(setGithubUrl(e.target.value))}
+                                            onChange={(e) =>
+                                                dispatch(
+                                                    setGithubUrl(e.target.value)
+                                                )
+                                            }
                                             required
                                         />
                                     </div>
@@ -235,6 +318,167 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
+
+            {branches.length > 0 && (
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 mt-12">
+                    <div className="bg-white rounded-lg shadow-sm p-6">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-lg font-medium">
+                                Repository Branches
+                            </h3>
+                            <div className="flex items-center space-x-3">
+                                <span className="text-sm text-gray-600">
+                                    Show Branches
+                                </span>
+                                <Switch
+                                    checked={showBranches}
+                                    onChange={setShowBranches}
+                                    className={`${
+                                        showBranches
+                                            ? "bg-indigo-600"
+                                            : "bg-gray-200"
+                                    } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
+                                >
+                                    <span
+                                        className={`${
+                                            showBranches
+                                                ? "translate-x-6"
+                                                : "translate-x-1"
+                                        } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                                    />
+                                </Switch>
+                            </div>
+                        </div>
+
+                        {showBranches && (
+                            <>
+                                <div className="space-y-4">
+                                    {currentBranches.map((branch) => (
+                                        <div
+                                            key={branch.name}
+                                            className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                                        >
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center space-x-3">
+                                                    <svg
+                                                        className="h-5 w-5 text-gray-500"
+                                                        fill="none"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth="2"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path d="M2 5a2 2 0 012-2h16a2 2 0 012 2v14a2 2 0 01-2 2H4a2 2 0 01-2-2V5z" />
+                                                    </svg>
+                                                    <span className="font-medium text-gray-900">
+                                                        {branch.name}
+                                                    </span>
+                                                </div>
+                                                <button
+                                                    onClick={() =>
+                                                        analyzeBranch(
+                                                            branch.name
+                                                        )
+                                                    }
+                                                    disabled={
+                                                        analyzingBranch ===
+                                                        branch.name
+                                                    }
+                                                    className={`px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 ${
+                                                        analyzingBranch ===
+                                                        branch.name
+                                                            ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                                                            : branchAnalysis[
+                                                                  branch.name
+                                                              ]
+                                                            ? "bg-green-100 text-green-800"
+                                                            : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+                                                    }`}
+                                                >
+                                                    {analyzingBranch ===
+                                                    branch.name ? (
+                                                        <>
+                                                            <svg
+                                                                className="animate-spin h-4 w-4 text-gray-500"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                fill="none"
+                                                                viewBox="0 0 24 24"
+                                                            >
+                                                                <circle
+                                                                    className="opacity-25"
+                                                                    cx="12"
+                                                                    cy="12"
+                                                                    r="10"
+                                                                    stroke="currentColor"
+                                                                    strokeWidth="4"
+                                                                />
+                                                                <path
+                                                                    className="opacity-75"
+                                                                    fill="currentColor"
+                                                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                                                />
+                                                            </svg>
+                                                            <span>
+                                                                Analyzing
+                                                                Branch...
+                                                            </span>
+                                                        </>
+                                                    ) : branchAnalysis[
+                                                          branch.name
+                                                      ] ? (
+                                                        "View Analysis"
+                                                    ) : (
+                                                        "Analyze Branch"
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="mt-6 flex items-center justify-between border-t border-gray-200 pt-4">
+                                    <button
+                                        onClick={() =>
+                                            setCurrentPage((prev) =>
+                                                Math.max(prev - 1, 1)
+                                            )
+                                        }
+                                        disabled={currentPage === 1}
+                                        className={`flex items-center space-x-2 px-3 py-1 rounded-md text-sm ${
+                                            currentPage === 1
+                                                ? "text-gray-400 cursor-not-allowed"
+                                                : "text-gray-700 hover:bg-gray-100"
+                                        }`}
+                                    >
+                                        <ChevronLeftIcon className="h-4 w-4" />
+                                        <span>Previous</span>
+                                    </button>
+                                    <span className="text-sm text-gray-700">
+                                        Page {currentPage} of {totalPages}
+                                    </span>
+                                    <button
+                                        onClick={() =>
+                                            setCurrentPage((prev) =>
+                                                Math.min(prev + 1, totalPages)
+                                            )
+                                        }
+                                        disabled={currentPage === totalPages}
+                                        className={`flex items-center space-x-2 px-3 py-1 rounded-md text-sm ${
+                                            currentPage === totalPages
+                                                ? "text-gray-400 cursor-not-allowed"
+                                                : "text-gray-700 hover:bg-gray-100"
+                                        }`}
+                                    >
+                                        <span>Next</span>
+                                        <ChevronRightIcon className="h-4 w-4" />
+                                    </button>
+                                </div>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 }

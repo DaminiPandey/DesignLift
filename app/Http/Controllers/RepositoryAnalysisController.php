@@ -9,6 +9,7 @@ use App\Services\GitHubService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class RepositoryAnalysisController extends Controller
 {
@@ -75,9 +76,11 @@ class RepositoryAnalysisController extends Controller
 
                 try {
                     $analysis = $this->claudeService->analyzeCode($file['content']);
-                    if (is_array($analysis) && 
-                        isset($analysis['complexity_score']) && 
-                        isset($analysis['quality_score'])) {
+                    if (
+                        is_array($analysis) &&
+                        isset($analysis['complexity_score']) &&
+                        isset($analysis['quality_score'])
+                    ) {
                         $fileAnalyses[$file['name']] = $analysis;
                     }
                 } catch (\Exception $e) {
@@ -107,11 +110,13 @@ class RepositoryAnalysisController extends Controller
                 'user_id' => Auth::id(),
             ]);
 
+            // Store analysis in session for branch stats page
+            session()->put("branch_analysis_{$request->branch}", $metrics);
+
             return response()->json([
                 'status' => 'success',
                 'analysis' => $metrics
             ]);
-
         } catch (\Exception $e) {
             Log::error('Analysis failed', [
                 'error' => $e->getMessage(),
@@ -148,5 +153,13 @@ class RepositoryAnalysisController extends Controller
     public function show(RepositoryAnalysis $analysis)
     {
         return response()->json($analysis);
+    }
+
+    public function showBranchStats($branch)
+    {
+        return Inertia::render('BranchStats', [
+            'branch' => $branch,
+            'analysis' => session()->get("branch_analysis_{$branch}", [])
+        ]);
     }
 }
