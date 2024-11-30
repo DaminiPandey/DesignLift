@@ -41,4 +41,8 @@ Route::get('/metrics', [MetricsController::class, 'index'])
     ->middleware(['auth'])
     ->name('metrics');
 
+Route::get('/{branch}/stats', [RepositoryAnalysisController::class, 'showBranchStats'])
+    ->middleware(['auth'])
+    ->name('branch.stats');
+
 require __DIR__ . '/auth.php';
