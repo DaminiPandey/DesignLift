@@ -45,9 +45,11 @@ export default function Metrics() {
                             <FileAnalysisCards analysis={analysis} />
                         </div>
                     </div>
+                    </div>
                 </div>
-            </div>):(<div className="flex  flex-1 flex-col">
-                    <div className="mx-auto max-w-7xl sm:px-6 px-4 lg:px-8 w-full flex-1 flex flex-col">
+            ) : (
+                 <div className="flex flex-1 flex-col bg-gray-50">
+                    <div className="mx-auto max-w-7xl sm:px-6 px-4 lg:px-8 w-full flex-1 flex flex-col items-center justify-center">
                         <div className="flex flex-col items-center justify-center h-full gap-6">
                             <div className="flex flex-col items-center justify-center gap-3">
                                 <h1 className="text-5xl font-semibold text-typography-950">
@@ -57,10 +59,11 @@ export default function Metrics() {
                                     Please enter a valid git repo link!
                                 </p>
                             </div>
+                           
                         </div>
                     </div>
-                </div>)}
-            {/* <ReactSpeedometer minValue={0} maxValue={10} value={5} /> */}
+                </div>
+            )}
         </AuthenticatedLayout>
     );
 }
