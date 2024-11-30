@@ -2,7 +2,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
 import axios from "axios";
-import { Button } from "@/Components/ui/button";
 
 export default function Dashboard() {
     const [githubUrl, setGithubUrl] = useState("");
@@ -160,7 +159,6 @@ export default function Dashboard() {
                                                 <h4 className="text-lg font-medium mb-4">
                                                     File Analysis
                                                 </h4>
-                                                <Button>Hey</Button>
                                                 <div className="space-y-4">
                                                     {Object.entries(
                                                         analysis.file_analyses

@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\RepositoryAnalysisController;
+use App\Http\Controllers\MetricsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,5 +36,9 @@ Route::post('/analyze', [RepositoryAnalysisController::class, 'analyze'])
     ->middleware(['auth'])
     ->name('repository.analyze');
 Route::get('/analysis/{analysis}', [RepositoryAnalysisController::class, 'show']);
+
+Route::get('/metrics', [MetricsController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('metrics');
 
 require __DIR__ . '/auth.php';
