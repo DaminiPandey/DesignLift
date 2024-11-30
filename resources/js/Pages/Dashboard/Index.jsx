@@ -2,21 +2,23 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
 import axios from "axios";
+import { useSelector, useDispatch } from 'react-redux'
+import { 
+    setGithubUrl, 
+    startAnalysis, 
+    analysisSuccess, 
+    analysisError 
+} from '@/store/slices/analysisSlice'
 
 export default function Dashboard() {
-    const [githubUrl, setGithubUrl] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [analysis, setAnalysis] = useState(null);
-    const [error, setError] = useState(null);
+    const dispatch = useDispatch()
+    const { githubUrl, loading, analysis, error } = useSelector((state) => state.analysis)
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        setError(null);
-        setAnalysis(null);
+        dispatch(startAnalysis());
 
         try {
-            // Extract owner and repo from GitHub URL
             const urlParts = githubUrl
                 .replace("https://github.com/", "")
                 .replace(".git", "")
@@ -35,11 +37,9 @@ export default function Dashboard() {
                 repository_name: repoFullName,
             });
 
-            setAnalysis(response.data.analysis);
+            dispatch(analysisSuccess(response.data.analysis));
         } catch (error) {
-            setError(error.response?.data?.message || error.message);
-        } finally {
-            setLoading(false);
+            dispatch(analysisError(error.response?.data?.message || error.message));
         }
     };
 
@@ -73,9 +73,7 @@ export default function Dashboard() {
                                             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                                             placeholder="https://github.com/owner/repository"
                                             value={githubUrl}
-                                            onChange={(e) =>
-                                                setGithubUrl(e.target.value)
-                                            }
+                                            onChange={(e) => dispatch(setGithubUrl(e.target.value))}
                                             required
                                         />
                                     </div>
