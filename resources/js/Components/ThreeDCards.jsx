@@ -69,10 +69,7 @@ export function ThreeDCards({ analysis }) {
                         className="flex space-x-4 mt-4 animate-in slide-in-from-bottom duration-1000"
                     >
                         <span className="text-3xl font-bold text-green-500">
-                            +{analysis?.additions || "0"}
-                        </span>
-                        <span className="text-3xl font-bold text-red-500">
-                            -{analysis?.deletions || "0"}
+                            {analysis?.code_churn}
                         </span>
                     </CardItem>
                     <CardItem
@@ -93,7 +90,7 @@ export function ThreeDCards({ analysis }) {
                     >
                         <div className="flex items-center space-x-2">
                             <svg
-                                className="w-5 h-5 text-purple-500 animate-spin-slow"
+                                className="w-5 h-5 text-purple-500 animate-pulse"
                                 fill="none"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
