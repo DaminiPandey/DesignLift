@@ -29,6 +29,7 @@
     },
     "dependencies": {
         "@heroicons/react": "^2.2.0",
-        "@radix-ui/react-slot": "^1.1.0"
+        "@radix-ui/react-slot": "^1.1.0",
+        "framer-motion": "^11.12.0"
     }
 }
