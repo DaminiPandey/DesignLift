@@ -17,14 +17,9 @@ export default function BranchStats({ branch, analysis }) {
               {}
           )
         : {};
-
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Branch Analysis: {branch}
-                </h2>
-            }
+         
         >
             <Head title={`Analysis - ${branch}`} />
 
