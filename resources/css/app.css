@@ -2,73 +2,131 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
+body {
+  overscroll-behavior: none;
+}
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --foreground: 222.2 84% 4.9%;
 
-        --card: 0 0% 100%;
-        --card-foreground: 222.2 84% 4.9%;
+        --color-primary-0: 236 248 254;
+        --color-primary-50: 219 244 255;
+        --color-primary-100: 173 219 255;
+        --color-primary-200: 124 194 255;
+        --color-primary-300: 74 169 255;
+        --color-primary-400: 26 145 255;
+        --color-primary-500: 0 119 230;
+        --color-primary-600: 0 93 180;
+        --color-primary-700: 0 66 130;
+        --color-primary-800: 0 40 81;
+        --color-primary-900: 0 14 33;
+        --color-primary-950: 3 14 28;
 
-        --popover: 0 0% 100%;
-        --popover-foreground: 222.2 84% 4.9%;
+        --color-typography-0: #fefeff;
+        --color-typography-50: #f5f5f5;
+        --color-typography-100: #e5e5e5;
+        --color-typography-200: #dbdbdc;
+        --color-typography-300: #d4d4d4;
+        --color-typography-400: #a3a3a3;
+        --color-typography-500: #8c8c8c;
+        --color-typography-600: #737373;
+        --color-typography-700: #525252;
+        --color-typography-800: #404040;
+        --color-typography-900: #262627;
+        --color-typography-950: #171717;
 
-        --primary: 222.2 47.4% 11.2%;
-        --primary-foreground: 210 40% 98%;
+        --color-background-0: 255 255 255;
+        --color-background-50: 251 251 251;
+        --color-background-100: 243 243 243;
+        --color-background-200: 220 219 219;
+        --color-background-300: 213 212 212;
+        --color-background-400: 162 163 163;
+        --color-background-500: 142 142 142;
+        --color-background-600: 116 116 116;
+        --color-background-700: 83 82 82;
+        --color-background-800: 65 64 64;
+        --color-background-900: 39 38 37;
+        --color-background-950: 24 23 23;
 
-        --secondary: 210 40% 96.1%;
-        --secondary-foreground: 222.2 47.4% 11.2%;
+        --color-outline-0: #fefeff;
+        --color-outline-50: #f3f3f3;
+        --color-outline-100: #e6e6e6;
+        --color-outline-200: #dddcdb;
+        --color-outline-300: #d3d3d3;
+        --color-outline-400: #a5a3a3;
+        --color-outline-500: #8c8d8d;
+        --color-outline-600: #737474;
+        --color-outline-700: #535252;
+        --color-outline-800: #414141;
+        --color-outline-900: #272624;
+        --color-outline-950: #1a1717;
 
-        --muted: 210 40% 96.1%;
-        --muted-foreground: 215.4 16.3% 46.9%;
-
-        --accent: 210 40% 96.1%;
-        --accent-foreground: 222.2 47.4% 11.2%;
-
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 210 40% 98%;
-
-        --border: 214.3 31.8% 91.4%;
-        --input: 214.3 31.8% 91.4%;
-        --ring: 222.2 84% 4.9%;
-
-        --radius: 0.5rem;
+        --color-error-600: #f87171;
+        --color-error-background: #FEE9E9;
     }
 
     .dark {
-        --background: 222.2 84% 4.9%;
-        --foreground: 210 40% 98%;
 
-        --card: 222.2 84% 4.9%;
-        --card-foreground: 210 40% 98%;
+        --color-primary-0: 236 248 254;
+        --color-primary-50: 219 244 255;
+        --color-primary-100: 173 219 255;
+        --color-primary-200: 124 194 255;
+        --color-primary-300: 74 169 255;
+        --color-primary-400: 26 145 255;
+        --color-primary-500: 0 119 230;
+        --color-primary-600: 0 93 180;
+        --color-primary-700: 0 66 130;
+        --color-primary-800: 0 40 81;
+        --color-primary-900: 0 14 33;
+        --color-primary-950: 3 14 28;
 
-        --popover: 222.2 84% 4.9%;
-        --popover-foreground: 210 40% 98%;
 
-        --primary: 210 40% 98%;
-        --primary-foreground: 222.2 47.4% 11.2%;
+        --color-typography-0: #171717;
+        --color-typography-50: #262627;
+        --color-typography-100: #404040;
+        --color-typography-200: #525252;
+        --color-typography-300: #737373;
+        --color-typography-400: #8c8c8c;
+        --color-typography-500: #a3a3a3;
+        --color-typography-600: #d4d4d4;
+        --color-typography-700: #dbdbdc;
+        --color-typography-800: #e5e5e5;
+        --color-typography-900: #f5f5f5;
+        --color-typography-950: #fefeff;
 
-        --secondary: 217.2 32.6% 17.5%;
-        --secondary-foreground: 210 40% 98%;
+        --color-background-0: 25 25 26;
+        --color-background-50: 37 37 39;
+        --color-background-100: 62 62 65;
+        --color-background-200: 79 79 83;
+        --color-background-300: 111 110 116;
+        --color-background-400: 137 136 142;
+        --color-background-500: 157 156 163;
+        --color-background-600: 205 204 213;
+        --color-background-700: 221 220 229;
+        --color-background-800: 233 232 242;
+        --color-background-900: 239 239 246;
+        --color-background-950: 247 246 254;
 
-        --muted: 217.2 32.6% 17.5%;
-        --muted-foreground: 215 20.2% 65.1%;
+        --color-outline-0: #1a1717;
+        --color-outline-50: #272624;
+        --color-outline-100: #414141;
+        --color-outline-200: #535252;
+        --color-outline-300: #737474;
+        --color-outline-400: #8c8d8d;
+        --color-outline-500: #a5a3a3;
+        --color-outline-600: #d3d3d3;
+        --color-outline-700: #dddcdb;
+        --color-outline-800: #e6e6e6;
+        --color-outline-900: #f3f3f3;
+        --color-outline-950: #fdfefe;
 
-        --accent: 217.2 32.6% 17.5%;
-        --accent-foreground: 210 40% 98%;
 
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 210 40% 98%;
-
-        --border: 217.2 32.6% 17.5%;
-        --input: 217.2 32.6% 17.5%;
-        --ring: 212.7 26.8% 83.9%;
+        --color-error-600: #f87171;
+        --color-error-background: #531313;
     }
-}
 
-@layer base {
-    * {
-    }
-    body {
+    ::-webkit-scrollbar {
+        display: none;
     }
 }
