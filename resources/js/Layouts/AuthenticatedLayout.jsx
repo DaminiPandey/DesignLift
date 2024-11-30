@@ -4,10 +4,10 @@ import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
-
+import { useSelector } from "react-redux";
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
-
+    const { analysis } = useSelector((state) => state.analysis);
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -30,12 +30,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
-                                <NavLink
-                                    href={route("metrics")}
-                                    active={route().current("metrics")}
-                                >
-                                    Metrics
-                                </NavLink>
+                                {analysis && (
+                                    <NavLink
+                                        href={route("metrics")}
+                                        active={route().current("metrics")}
+                                    >
+                                        Metrics
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 
