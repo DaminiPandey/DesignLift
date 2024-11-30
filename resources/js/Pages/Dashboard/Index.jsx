@@ -11,6 +11,7 @@ import {
 } from "@/store/slices/analysisSlice";
 import { Switch } from "@headlessui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+import { Button } from "@/Components/ui/button";
 
 export default function Dashboard() {
     const dispatch = useDispatch();
@@ -166,12 +167,13 @@ export default function Dashboard() {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className={`inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                                    className={`inline-flex justify-center rounded-md border border-transparent bg-gray-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-0 active:bg-gray-900 focus:ring-gray-600 focus:ring-offset-2 ${
                                         loading
                                             ? "opacity-50 cursor-not-allowed"
                                             : ""
                                     }`}
                                 >
+                                    
                                     {loading
                                         ? "Analyzing..."
                                         : "Analyze Repository"}
@@ -184,7 +186,7 @@ export default function Dashboard() {
                                 </div>
                             )}
 
-                            {analysis && (
+                            {/* {analysis && (
                                 <div className="mt-8 space-y-6">
                                     <h3 className="text-lg font-medium">
                                         Analysis Results
@@ -310,7 +312,7 @@ export default function Dashboard() {
                                             </div>
                                         )}
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </div>
@@ -319,7 +321,7 @@ export default function Dashboard() {
             {branches.length > 0 && (
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 mt-1 w-full">
                     <div className="bg-white rounded-lg shadow-sm p-6 mb-10">
-                        <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center justify-between">
                             <h3 className="text-lg font-medium">
                                 Repository Branches
                             </h3>
@@ -332,9 +334,9 @@ export default function Dashboard() {
                                     onChange={setShowBranches}
                                     className={`${
                                         showBranches
-                                            ? "bg-indigo-600"
+                                            ? "bg-gray-600"
                                             : "bg-gray-200"
-                                    } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
+                                    } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-0 focus:ring-indigo-500 focus:ring-offset-2`}
                                 >
                                     <span
                                         className={`${
@@ -353,7 +355,7 @@ export default function Dashboard() {
                                     {currentBranches.map((branch) => (
                                         <div
                                             key={branch.name}
-                                            className="bg-gray-50 rounded-lg p-4 border border-gray-200"
+                                            className="bg-gray-50 rounded-lg p-4 py-3  border-gray-200"
                                         >
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center space-x-3">
@@ -364,32 +366,22 @@ export default function Dashboard() {
                                                         {branch.name}
                                                     </span>
                                                 </div>
-                                                <button
-                                                    onClick={() =>
-                                                        analyzeBranch(
-                                                            branch.name
-                                                        )
-                                                    }
-                                                    disabled={
-                                                        analyzingBranch ===
-                                                        branch.name
-                                                    }
-                                                    className={`px-4 py-2 rounded-md text-sm font-medium flex items-center space-x-2 ${
-                                                        analyzingBranch ===
-                                                        branch.name
-                                                            ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                                                            : branchAnalysis[
-                                                                  branch.name
-                                                              ]
-                                                            ? "bg-green-100 text-green-800"
-                                                            : "bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+                                                <Button
+                                                    onClick={() => analyzeBranch(branch.name)}
+                                                    variant="outline"
+                                                    disabled={analyzingBranch === branch.name}
+                                                    className={`px-4 py-2 rounded-md focus:ring-0 focus-visible:ring-2 focus-visible:ring-gray-500 text-sm font-medium transition-all duration-200 flex items-center space-x-2 ${
+                                                        analyzingBranch === branch.name
+                                                            ? "bg-gray-50 text-gray-400 cursor-not-allowed border border-gray-200"
+                                                            : branchAnalysis[branch.name]
+                                                            ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200"
+                                                            : "bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-gray-200 shadow-sm"
                                                     }`}
                                                 >
-                                                    {analyzingBranch ===
-                                                    branch.name ? (
+                                                    {analyzingBranch === branch.name ? (
                                                         <>
                                                             <svg
-                                                                className="animate-spin h-4 w-4 text-gray-500"
+                                                                className="animate-spin h-4 w-4 text-gray-400"
                                                                 xmlns="http://www.w3.org/2000/svg"
                                                                 fill="none"
                                                                 viewBox="0 0 24 24"
@@ -400,7 +392,7 @@ export default function Dashboard() {
                                                                     cy="12"
                                                                     r="10"
                                                                     stroke="currentColor"
-                                                                    strokeWidth="4"
+                                                                    strokeWidth="3"
                                                                 />
                                                                 <path
                                                                     className="opacity-75"
@@ -408,19 +400,29 @@ export default function Dashboard() {
                                                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                                                 />
                                                             </svg>
-                                                            <span>
-                                                                Analyzing
-                                                                Branch...
-                                                            </span>
+                                                            <span>Analyzing...</span>
                                                         </>
-                                                    ) : branchAnalysis[
-                                                          branch.name
-                                                      ] ? (
-                                                        "View Analysis"
+                                                    ) : branchAnalysis[branch.name] ? (
+                                                        <>
+                                                            <svg 
+                                                                xmlns="http://www.w3.org/2000/svg" 
+                                                                className="h-4 w-4"
+                                                                viewBox="0 0 24 24" 
+                                                                fill="none" 
+                                                                stroke="currentColor" 
+                                                                strokeWidth="2"
+                                                            >
+                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                                            </svg>
+                                                            <span>View Results</span>
+                                                        </>
                                                     ) : (
-                                                        "Analyze Branch"
+                                                        <>
+                                                          
+                                                            <span>Analyze Branch</span>
+                                                        </>
                                                     )}
-                                                </button>
+                                                </Button>
                                             </div>
                                         </div>
                                     ))}

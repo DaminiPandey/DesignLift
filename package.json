@@ -31,6 +31,7 @@
         "@heroicons/react": "^2.2.0",
         "@radix-ui/react-slot": "^1.1.0",
         "@reduxjs/toolkit": "^2.4.0",
+        "@tabler/icons-react": "^3.23.0",
         "framer-motion": "^11.12.0",
         "react-d3-speedometer": "^2.2.1",
         "react-google-charts": "^5.2.1",
