@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from 'react-redux'
@@ -38,6 +38,8 @@ export default function Dashboard() {
             });
 
             dispatch(analysisSuccess(response.data.analysis));
+            router.visit(route('metrics'));
+
         } catch (error) {
             dispatch(analysisError(error.response?.data?.message || error.message));
         }
@@ -45,15 +47,10 @@ export default function Dashboard() {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Repository Analysis
-                </h2>
-            }
         >
             <Head title="Repository Analysis" />
 
-            <div className="py-12">
+            <div className="py-12 w-full">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">

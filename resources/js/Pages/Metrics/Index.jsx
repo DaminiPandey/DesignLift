@@ -26,16 +26,11 @@ export default function Metrics() {
     console.log(analysis);
 
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Repository Metrics
-                </h2>
-            }
-        >
+        <AuthenticatedLayout>
             <Head title="Repository Metrics" />
 
-            <div className="py-12">
+{analysis?
+           ( <div className="py-12 w-full">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 w-full">
@@ -92,8 +87,21 @@ export default function Metrics() {
                         </div>
                     </div>
                 </div>
-            </div>
-            <ReactSpeedometer minValue={0} maxValue={10} value={5} />
+            </div>):(<div className="flex  flex-1 flex-col">
+                    <div className="mx-auto max-w-7xl sm:px-6 px-4 lg:px-8 w-full flex-1 flex flex-col">
+                        <div className="flex flex-col items-center justify-center h-full gap-6">
+                            <div className="flex flex-col items-center justify-center gap-3">
+                                <h1 className="text-5xl font-semibold text-typography-950">
+                                    Let’s get started with the code analysis! 🚀{" "}
+                                </h1>
+                                <p className="text-typography-500 text-xl">
+                                    Let's help you analyze the code of the repository!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>)}
+            {/* <ReactSpeedometer minValue={0} maxValue={10} value={5} /> */}
         </AuthenticatedLayout>
     );
 }
