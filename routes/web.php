@@ -24,4 +24,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+
+use App\Http\Controllers\Auth\SocialLoginController;
+
+Route::get('/auth/github', [SocialLoginController::class, 'redirectToProvider'])->name('login.github');
+Route::get('/auth/github/callback', [SocialLoginController::class, 'handleProviderCallback']);
+
+require __DIR__ . '/auth.php';
