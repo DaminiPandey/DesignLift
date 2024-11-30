@@ -95,7 +95,7 @@ export default function Metrics() {
                                     Let’s get started with the code analysis! 🚀{" "}
                                 </h1>
                                 <p className="text-typography-500 text-xl">
-                                    Let's help you analyze the code of the repository!
+                                    Please enter a valid git repo link!
                                 </p>
                             </div>
                         </div>
