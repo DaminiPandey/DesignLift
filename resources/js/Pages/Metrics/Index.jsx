@@ -25,7 +25,8 @@ const words = `Oxygen gets you high. In a catastrophic emergency, we're taking g
 
 export default function Metrics() {
     const { analysis } = useSelector((state) => state.analysis);
-    console.log(analysis,"analysis")
+    console.log(analysis);
+
     return (
         <AuthenticatedLayout
             header={
@@ -39,8 +40,8 @@ export default function Metrics() {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                           <TextGenerateEffect duration={2} filter={false} words={words} />
+                        <div className="p-6 text-gray-900 w-full">
+                            <ThreeDCards analysis={analysis} />
                             <CardContainer className="inter-var">
       <CardBody className="bg-gray-50 relative group/card  dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border  ">
         <CardItem
