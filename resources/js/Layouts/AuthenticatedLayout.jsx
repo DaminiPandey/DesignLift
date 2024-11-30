@@ -205,7 +205,7 @@ const people = [
                 </header>
             )}
 
-            <main className="flex-1 h-full flex">{children}</main>
+            <main className="flex-1 h-full flex flex-col">{children}</main>
         </div>
     );
 }

@@ -17,31 +17,31 @@ class GitHubService
     {
         try {
             $cacheKey = "repo_content_{$repoFullName}";
-            return Cache::remember($cacheKey, 3600, function () use ($repoFullName) {
-                Log::info('Starting repository analysis', ['repo' => $repoFullName]);
+            // return Cache::remember($cacheKey, 3600, function () use ($repoFullName) {
+            Log::info('Starting repository analysis', ['repo' => $repoFullName]);
 
-                // Get repository stats
-                $stats = $this->getRepositoryStats($repoFullName);
-                
-                // Get main files for analysis (limited)
-                $files = $this->getMainFiles($repoFullName);
+            // Get repository stats
+            $stats = $this->getRepositoryStats($repoFullName);
 
-                $result = [
-                    'commit_frequency' => $stats['commit_frequency'],
-                    'code_churn' => $stats['code_churn'],
-                    'files' => $files
-                ];
+            // Get main files for analysis (limited)
+            $files = $this->getMainFiles($repoFullName);
 
-                Log::info('Repository analysis completed', [
-                    'metrics' => [
-                        'commit_frequency' => $result['commit_frequency'],
-                        'code_churn' => $result['code_churn'],
-                        'files_count' => count($result['files'])
-                    ]
-                ]);
+            $result = [
+                'commit_frequency' => $stats['commit_frequency'],
+                'code_churn' => $stats['code_churn'],
+                'files' => $files
+            ];
 
-                return $result;
-            });
+            Log::info('Repository analysis completed', [
+                'metrics' => [
+                    'commit_frequency' => $result['commit_frequency'],
+                    'code_churn' => $result['code_churn'],
+                    'files_count' => count($result['files'])
+                ]
+            ]);
+
+            return $result;
+            // });
         } catch (\Exception $e) {
             Log::error('Repository analysis failed', [
                 'error' => $e->getMessage(),
@@ -69,13 +69,16 @@ class GitHubService
                 $contents = $response->json();
                 $analyzedCount = 0;
 
+                Log::info("===============>" . count($contents));
+
                 foreach ($contents as $item) {
                     if ($analyzedCount >= $this->maxFilesToAnalyze) {
                         break;
                     }
 
-                    if ($item['type'] === 'file' && $this->isAnalyzableFile($item['name'])) {
+                    if ($this->isAnalyzableFile($item['name'])) {
                         $content = $this->getFileContent($repoFullName, $item['path']);
+                        Log::info("========34543=======>" . json_encode($item));
                         if ($content) {
                             $files[] = [
                                 'name' => $item['path'],
@@ -85,6 +88,7 @@ class GitHubService
                         }
                     }
                 }
+                Log::info("===============>" . $analyzedCount);
                 return $files;
             }
         } catch (\Exception $e) {
@@ -172,7 +176,7 @@ class GitHubService
 
     protected function isAnalyzableFile($filename)
     {
-        $extensions = ['php', 'js', 'jsx', 'ts', 'tsx', 'vue'];
+        $extensions = ['php', 'js', 'jsx', 'ts', 'tsx', 'vue', 'css', 'json', '.config.js', 'tsx'];
         $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         return in_array($ext, $extensions);
     }
