@@ -18,13 +18,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
             <div className="bg-black text-black/50 dark:bg-black dark:text-white/50">
                 <div className="flex min-h-screen flex-col ">
                     <div className="w-full max-w-2xl   px-6 lg:max-w-7xl mx-auto flex flex-col h-[100vh]">
-                        <header className="flex flex-row border-b border-gray-800 gap-2 p-4 bg-black ">
+                        <header className="flex flex-row gap-2 p-4 bg-black ">
                             <nav className="-mx-3 flex flex-1 justify-between">
                                 {auth.user ? (
                                     <>
                                         <div className="flex shrink-0 items-center">
                                             <Link href="/">
-                                                <p className="text-4xl font-bold">
+                                                <p className="text-4xl font-bold text-white">
                                                     &lt;/&gt;
                                                 </p>
                                             </Link>

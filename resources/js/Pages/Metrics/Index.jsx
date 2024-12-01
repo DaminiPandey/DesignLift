@@ -30,7 +30,7 @@ export default function Metrics() {
 {analysis?
            ( <div className="py-12 w-full">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                    <div className="overflow-hidden bg-background-50 shadow-sm sm:rounded-lg">
                         <div className="p-6 w-full">
                             <ThreeDCards analysis={analysis} />
 
@@ -48,7 +48,7 @@ export default function Metrics() {
                     </div>
                 </div>
             ) : (
-                 <div className="flex flex-1 flex-col bg-gray-50">
+                 <div className="flex flex-1 flex-col bg-background-50">
                     <div className="mx-auto max-w-7xl sm:px-6 px-4 lg:px-8 w-full flex-1 flex flex-col items-center justify-center">
                         <div className="flex flex-col items-center justify-center h-full gap-6">
                             <div className="flex flex-col items-center justify-center gap-3">
