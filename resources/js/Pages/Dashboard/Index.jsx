@@ -147,7 +147,7 @@ export default function Dashboard() {
                                             type="text"
                                             name="githubUrl"
                                             id="githubUrl"
-                                            className="block w-full rounded-md bg-background-50 text-typography-900 border-outline-200 shadow-sm focus:border-outline-300 focus:ring-outline-300 sm:text-sm"
+                                            className="block w-full rounded-md bg-background-50 text-typography-900 border-outline-200 shadow-sm focus:border-outline-200 focus:ring-outline-200 sm:text-sm"
                                             placeholder="https://github.com/owner/repository"
                                             value={githubUrl}
                                             onChange={(e) =>
