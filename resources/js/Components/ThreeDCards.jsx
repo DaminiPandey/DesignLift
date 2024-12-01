@@ -38,7 +38,7 @@ export function ThreeDCards({ analysis }) {
                         translateZ="40"
                         className="text-neutral-500 dark:text-neutral-300 text-sm mt-2"
                     >
-                        commits in the last 30 days
+                        commits in the last week
                     </CardItem>
                 </CardBody>
             </CardContainer>

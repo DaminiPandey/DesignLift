@@ -1,6 +1,9 @@
 import { Transition } from "@headlessui/react";
 import { Link } from "@inertiajs/react";
 import { createContext, useContext, useState } from "react";
+import { Transition } from "@headlessui/react";
+import { Link } from "@inertiajs/react";
+import { createContext, useContext, useState } from "react";
 
 const DropDownContext = createContext();
 
@@ -44,7 +47,12 @@ const Content = ({
     const { open, setOpen } = useContext(DropDownContext);
 
     let alignmentClasses = "origin-top";
+    let alignmentClasses = "origin-top";
 
+    if (align === "left") {
+        alignmentClasses = "ltr:origin-top-left rtl:origin-top-right start-0";
+    } else if (align === "right") {
+        alignmentClasses = "ltr:origin-top-right rtl:origin-top-left end-0";
     if (align === "left") {
         alignmentClasses = "ltr:origin-top-left rtl:origin-top-right start-0";
     } else if (align === "right") {
@@ -52,7 +60,10 @@ const Content = ({
     }
 
     let widthClasses = "";
+    let widthClasses = "";
 
+    if (width === "48") {
+        widthClasses = "w-48";
     if (width === "48") {
         widthClasses = "w-48";
     }
@@ -74,7 +85,7 @@ const Content = ({
                 >
                     <div
                         className={
-                            `rounded-md ring-1 p-1 ring-black bg-background-50 text-white ring-opacity-5 ` +
+                            `rounded-md ring-1 p-1 ring-black bg-black text-white ring-opacity-5 ` +
                             contentClasses
                         }
                     >
@@ -86,6 +97,7 @@ const Content = ({
     );
 };
 
+const DropdownLink = ({ className = "", children, ...props }) => {
 const DropdownLink = ({ className = "", children, ...props }) => {
     return (
         <Link

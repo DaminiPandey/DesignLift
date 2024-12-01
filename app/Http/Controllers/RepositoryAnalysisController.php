@@ -157,6 +157,10 @@ class RepositoryAnalysisController extends Controller
 
     public function showBranchStats($branch)
     {
+        // return Inertia::render('BranchStats', [
+        //     'branch' => $branch,
+        //     'analysis' => session()->get("branch_analysis_{$branch}", [])
+        // ]);
         return Inertia::render('BranchStats', [
             'branch' => $branch,
             'analysis' => session()->get("branch_analysis_{$branch}", [])

@@ -8,7 +8,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Tabs } from "@/Components/tabs";
+import { Tabs } from "@/Components/Tabs";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -28,6 +28,14 @@ export default function AuthenticatedLayout({ header, children }) {
             image: user?.image,
         },
     ];
+    const people = [
+        {
+            id: 1,
+            name: user?.name,
+            designation: user.email,
+            image: user?.image,
+        },
+    ];
     return (
         <div className="min-h-screen min-w-screen bg-background-0 flex flex-1  flex-col relative">
             <nav className="border-b-[0.5px] border-gray-800 bg-background-0">
@@ -35,7 +43,11 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
+                            <div className="flex shrink-0 items-center">
                                 <Link href="/">
+                                    <p className="text-4xl font-bold text-white">
+                                        &lt;/&gt;
+                                    </p>
                                     <p className="text-4xl font-bold text-white">
                                         &lt;/&gt;
                                     </p>
@@ -74,8 +86,25 @@ export default function AuthenticatedLayout({ header, children }) {
                                                     <AnimatedTooltip
                                                         items={people}
                                                     />
+                                                    <AnimatedTooltip
+                                                        items={people}
+                                                    />
                                                 </div>
 
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="16"
+                                                    height="16"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="#ffffff"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    class="lucide lucide-chevron-down"
+                                                >
+                                                    <path d="m6 9 6 6 6-6" />
+                                                </svg>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     width="16"
@@ -188,8 +217,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                 method="post"
                                 href={route("logout")}
                                 as="button"
+                                className="bg-red-500"
                             >
-                                Log Out
+                                Logout
                             </ResponsiveNavLink>
                         </div>
                     </div>

@@ -16,9 +16,12 @@ class GitHubService
     public function getRepositoryContent($repoFullName)
     {
         try {
+            // Validate token first
+            $this->validateGitHubToken();
+
             $cacheKey = "repo_content_{$repoFullName}";
             // return Cache::remember($cacheKey, 3600, function () use ($repoFullName) {
-            Log::info('Starting repository analysis', ['repo' => $repoFullName]);
+                Log::info('Starting repository analysis', ['repo' => $repoFullName]);
 
             // Get repository stats
             $stats = $this->getRepositoryStats($repoFullName);
@@ -40,7 +43,7 @@ class GitHubService
                 ]
             ]);
 
-            return $result;
+                return $result;
             // });
         } catch (\Exception $e) {
             Log::error('Repository analysis failed', [
@@ -212,6 +215,31 @@ class GitHubService
                 'id' => null,
                 'description' => null
             ];
+        }
+    }
+
+    protected function validateGitHubToken()
+    {
+        try {
+            $response = Http::withHeaders([
+                'Authorization' => 'token ' . Auth::user()->github_token,
+                'Accept' => 'application/vnd.github.v3+json',
+            ])->get("{$this->baseUrl}/user");
+
+            if (!$response->successful()) {
+                Log::error('GitHub token validation failed', [
+                    'status' => $response->status(),
+                    'response' => $response->json()
+                ]);
+                throw new \Exception('Invalid GitHub token');
+            }
+
+            return true;
+        } catch (\Exception $e) {
+            Log::error('GitHub token validation error', [
+                'error' => $e->getMessage()
+            ]);
+            throw $e;
         }
     }
 }
