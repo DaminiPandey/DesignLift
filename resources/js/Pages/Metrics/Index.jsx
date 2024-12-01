@@ -16,7 +16,6 @@ export default function Metrics() {
     const { analysis } = useSelector((state) => state.analysis);
     console.log(analysis);
 
-
     return (
         <AuthenticatedLayout>
             <Head title="Repository Metrics" />
@@ -27,12 +26,6 @@ export default function Metrics() {
                         <div className="overflow-hidden bg-background-50 shadow-sm sm:rounded-lg">
                             <div className="p-6 w-full">
                                 <ThreeDCards analysis={analysis} />
-
-                                {/* <TextGenerateEffect words="File Analysis" /> */}
-
-                                {/* <p className="text-xl font-semibold mt-6">
-                                File Analysis
-                            </p> */}
 
                                 <SummaryCards analysis={analysis} />
 
