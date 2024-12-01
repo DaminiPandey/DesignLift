@@ -2,14 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 body {
-  overscroll-behavior: none;
+    overscroll-behavior: none;
 }
 @layer base {
     :root {
-
         --color-primary-0: 236 248 254;
         --color-primary-50: 219 244 255;
         --color-primary-100: 173 219 255;
@@ -63,11 +60,10 @@ body {
         --color-outline-950: #1a1717;
 
         --color-error-600: #f87171;
-        --color-error-background: #FEE9E9;
+        --color-error-background: #fee9e9;
     }
 
     .dark {
-
         --color-primary-0: 236 248 254;
         --color-primary-50: 219 244 255;
         --color-primary-100: 173 219 255;
@@ -80,7 +76,6 @@ body {
         --color-primary-800: 0 40 81;
         --color-primary-900: 0 14 33;
         --color-primary-950: 3 14 28;
-
 
         --color-typography-0: #171717;
         --color-typography-50: #262627;
@@ -121,12 +116,21 @@ body {
         --color-outline-900: #f3f3f3;
         --color-outline-950: #fdfefe;
 
-
         --color-error-600: #f87171;
         --color-error-background: #531313;
     }
 
     ::-webkit-scrollbar {
         display: none;
+    }
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 30px var(--color-background-0) inset !important;
+        -webkit-text-fill-color: var(--color-typography-900) !important;
+        caret-color: var(--color-typography-900) !important;
+        transition: background-color 5000s ease-in-out 0s;
     }
 }
