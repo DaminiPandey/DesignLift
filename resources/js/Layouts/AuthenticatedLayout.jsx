@@ -29,22 +29,24 @@ const people = [
   },
 ];
     return (
-        <div className="min-h-screen min-w-screen bg-gray-50 flex flex-1  flex-col relative">
-            <nav className="border-b border-gray-100 bg-white">
+        <div className="min-h-screen min-w-screen bg-background-0 flex flex-1  flex-col relative">
+            <nav className="border-b-[0.5px] border-gray-800 bg-background-0">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                          
                               <div className="flex shrink-0 items-center">
                                 <Link href="/">
-                                 <p className="text-4xl font-bold">&lt;/&gt;</p>
+                                 <p className="text-4xl font-bold  text-white">&lt;/&gt;</p>
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-8 sm:flex">
+                            <div className="hidden space-x-8 text-white sm:-my-px sm:ms-8 sm:flex">
                                 <NavLink
                                     href={route("dashboard")}
                                     active={route().current("dashboard")}
+                                    className="text-white"
+
                                 >
                                     Dashboard
                                 </NavLink>
@@ -59,42 +61,30 @@ const people = [
                             </div>
                         </div>
 
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div className="hidden sm:ms-6 sm:flex sm:items-center ">
                             <div className="relative ms-3">
-                                <Dropdown>
+                                <Dropdown className="text-black bg-red-500">
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                className="inline-flex gap-2 items-center rounded-md border border-transparent bg-none px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                             >
                                                 <div className="flex items-center gap-2">
                                                     <AnimatedTooltip items={people} />
-                                                   
                                                 </div>
 
-                                                <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
+                                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down"><path d="m6 9 6 6 6-6"/></svg>
                                             </button>
                                         </span>
                                     </Dropdown.Trigger>
 
-                                    <Dropdown.Content>
-                                        <Dropdown.Link
+                                    <Dropdown.Content className="text-black bg-red-500">
+                                        {/* <Dropdown.Link
                                             href={route("profile.edit")}
                                         >
                                             Profile
-                                        </Dropdown.Link>
+                                        </Dropdown.Link> */}
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"

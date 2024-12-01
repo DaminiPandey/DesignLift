@@ -28,14 +28,14 @@ export default function SummaryCards({ analysis }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     key={card.title}
-                    className="bg-white rounded-xl p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out"
+                    className=" rounded-xl p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out"
                 >
                     <div className="flex flex-col items-center text-center space-y-3">
                         <span className="text-4xl mb-2">{card.icon}</span>
-                        <h3 className="text-lg font-semibold text-gray-800">
+                        <h3 className="text-lg font-semibold text-typography-900">
                             {card.title}
                         </h3>
-                        <p className="text-2xl font-bold text-indigo-600">
+                        <p className="text-2xl font-bold text-blue-500">
                             {card.value || ""}
                         </p>
                     </div>

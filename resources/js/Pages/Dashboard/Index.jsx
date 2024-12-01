@@ -132,13 +132,13 @@ export default function Dashboard() {
 
             <div className="py-12 w-full">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                    <div className="overflow-hidden bg-background-50 shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                <div>
+                                <div className="space-y-2">
                                     <label
                                         htmlFor="githubUrl"
-                                        className="block text-sm font-medium text-gray-700"
+                                        className="block text-sm font-medium text-typography-900"
                                     >
                                         GitHub Repository URL
                                     </label>
@@ -147,7 +147,7 @@ export default function Dashboard() {
                                             type="text"
                                             name="githubUrl"
                                             id="githubUrl"
-                                            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                            className="block w-full rounded-md bg-background-50 text-typography-900 border-outline-200 shadow-sm focus:border-outline-300 focus:ring-outline-300 sm:text-sm"
                                             placeholder="https://github.com/owner/repository"
                                             value={githubUrl}
                                             onChange={(e) =>
@@ -158,16 +158,13 @@ export default function Dashboard() {
                                             required
                                         />
                                     </div>
-                                    <p className="mt-1 text-sm text-gray-500">
-                                        Example:
-                                        https://github.com/laravel/laravel
-                                    </p>
+                                    
                                 </div>
 
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className={`inline-flex justify-center rounded-md border border-transparent bg-gray-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-0 active:bg-gray-900 focus:ring-gray-600 focus:ring-offset-2 ${
+                                    className={`inline-flex justify-center text-typography-900 rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 focus:ring-gray-600 focus:ring-offset-0 ${
                                         loading
                                             ? "opacity-50 cursor-not-allowed"
                                             : ""
@@ -320,13 +317,13 @@ export default function Dashboard() {
 
             {branches.length > 0 && (
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 mt-1 w-full">
-                    <div className="bg-white rounded-lg shadow-sm p-6 mb-10">
-                        <div className="flex items-center justify-between">
-                            <h3 className="text-lg font-medium">
+                    <div className="bg-background-50 rounded-lg shadow-sm p-6 mb-10">
+                        <div className="flex items-center justify-between ">
+                            <h3 className="text-lg font-medium text-typography-900">
                                 Repository Branches
                             </h3>
-                            <div className="flex items-center space-x-3">
-                                <span className="text-sm text-gray-600">
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm text-typography-500">
                                     Show Branches
                                 </span>
                                 <Switch
@@ -334,9 +331,9 @@ export default function Dashboard() {
                                     onChange={setShowBranches}
                                     className={`${
                                         showBranches
-                                            ? "bg-gray-600"
-                                            : "bg-gray-200"
-                                    } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-0 focus:ring-indigo-500 focus:ring-offset-2`}
+                                            ? "bg-green-700"
+                                            : "bg-background-200"
+                                    } relative inline-flex h-6 w-11 items-center focus-visible:ring-0 focus:ring-offset-0 rounded-full transition-colors focus:outline-none focus:ring-0 focus:ring-indigo-500`}
                                 >
                                     <span
                                         className={`${
@@ -351,18 +348,18 @@ export default function Dashboard() {
 
                         {showBranches && (
                             <>
-                                <div className="space-y-4 m-4">
+                                <div className="space-y-4 my-4">
                                     {currentBranches.map((branch) => (
                                         <div
                                             key={branch.name}
-                                            className="bg-gray-50 rounded-lg p-4 py-3  border-gray-200"
+                                            className="bg-background-100 rounded-lg p-4 py-3  border-gray-200"
                                         >
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center space-x-3">
                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
                                                    class="lucide lucide-git-branch"><line x1="6" x2="6" y1="3" y2="15"/>
                                                    <circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-                                                    <span className="font-medium text-gray-700">
+                                                    <span className="font-medium text-typography-700">
                                                         {branch.name}
                                                     </span>
                                                 </div>
@@ -375,7 +372,7 @@ export default function Dashboard() {
                                                             ? "bg-gray-50 text-gray-400 cursor-not-allowed border border-gray-200"
                                                             : branchAnalysis[branch.name]
                                                             ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200"
-                                                            : "bg-white text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-gray-200 shadow-sm"
+                                                            : "bg-background-0 text-typography-700 hover:bg-background-0 hover:border-outline-300 active:border-outline-400 hover:text-typography-900 border border-outline-200 shadow-sm"
                                                     }`}
                                                 >
                                                     {analyzingBranch === branch.name ? (
@@ -428,7 +425,7 @@ export default function Dashboard() {
                                     ))}
                                 </div>
 
-                                <div className="mt-6 flex items-center justify-between border-t border-gray-200 pt-4">
+                                <div className="mt-6 flex items-center justify-between border-t border-outline-200 pt-4">
                                     <button
                                         onClick={() =>
                                             setCurrentPage((prev) =>
@@ -438,14 +435,14 @@ export default function Dashboard() {
                                         disabled={currentPage === 1}
                                         className={`flex items-center space-x-2 px-3 py-1 rounded-md text-sm ${
                                             currentPage === 1
-                                                ? "text-gray-400 cursor-not-allowed"
-                                                : "text-gray-700 hover:bg-gray-100"
+                                                ? "text-typography-300 cursor-not-allowed"
+                                                : "text-typography-700 hover:bg-background-100"
                                         }`}
                                     >
                                         <ChevronLeftIcon className="h-4 w-4" />
                                         <span>Previous</span>
                                     </button>
-                                    <span className="text-sm text-gray-700">
+                                    <span className="text-sm text-typography-500">
                                         Page {currentPage} of {totalPages}
                                     </span>
                                     <button

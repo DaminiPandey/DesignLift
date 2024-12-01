@@ -12,8 +12,8 @@ export default function NavLink({
             className={
                 'inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none ' +
                 (active
-                    ? 'border-indigo-400 text-gray-900 focus:border-indigo-700'
-                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700') +
+                    ? 'border-background-700 text-typography-900 focus:border-background-900 '
+                    : 'border-transparent text-typography-500 hover:border-outline-500 hover:text-typography-700 focus:border-outline-300 focus:text-typography-700') +
                 className
             }
         >

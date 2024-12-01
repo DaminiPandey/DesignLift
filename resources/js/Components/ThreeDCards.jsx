@@ -7,7 +7,7 @@ export function ThreeDCards({ analysis }) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <CardContainer className="inter-var w-full">
-                <CardBody className="w-full bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1]  h-auto rounded-xl p-6 border hover:scale-105 transition-transform duration-300">
+                <CardBody className="w-full bg-black relative group/card dark:hover:shadow-2xl   border-0  h-auto rounded-xl p-6 hover:scale-105 transition-transform duration-300">
                     <CardItem
                         translateZ="100"
                         className="text-xl font-bold text-neutral-600 dark:text-white w-full"
@@ -29,7 +29,7 @@ export function ThreeDCards({ analysis }) {
                     </CardItem>
                     <CardItem
                         translateZ="60"
-                        className="text-4xl font-bold text-blue-500 mt-4 animate-in slide-in-from-bottom duration-1000"
+                        className="text-4xl  border-0 font-bold text-blue-500 mt-4 animate-in slide-in-from-bottom duration-1000"
                     >
                         {analysis?.commit_frequency || "0"}
                     </CardItem>
@@ -44,7 +44,7 @@ export function ThreeDCards({ analysis }) {
             </CardContainer>
 
             <CardContainer className="inter-var w-full">
-                <CardBody className="w-full first-line:bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1]  h-auto rounded-xl p-6 border hover:scale-105 transition-transform duration-300">
+                <CardBody className="w-full  bg-black relative group/card dark:hover:shadow-2xl   border-0  h-auto rounded-xl p-6 hover:scale-105 transition-transform duration-300">
                     <CardItem
                         translateZ="100"
                         className="text-xl font-bold text-neutral-600 dark:text-white"
@@ -83,7 +83,7 @@ export function ThreeDCards({ analysis }) {
             </CardContainer>
 
             <CardContainer className="inter-var w-full">
-                <CardBody className="w-full bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1]  h-auto rounded-xl p-6 border hover:scale-105 transition-transform duration-300">
+                <CardBody className="w-full bg-black relative group/card dark:hover:shadow-2xl   border-0  h-auto rounded-xl p-6 hover:scale-105 transition-transform duration-300">
                     <CardItem
                         translateZ="100"
                         className="text-xl font-bold text-neutral-600 dark:text-white"
