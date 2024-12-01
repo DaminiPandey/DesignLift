@@ -8,7 +8,6 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { Tabs } from "@/Components/Tabs";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -16,10 +15,7 @@ export default function AuthenticatedLayout({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
-    const tabs = [
-        { title: "Dashboard", value: "dashboard" },
-        { title: "Metrics", value: "metrics" },
-    ];
+ 
     const people = [
         {
             id: 1,
@@ -35,36 +31,33 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="flex h-16 justify-between">
                         <div className="flex">
                             <div className="flex shrink-0 items-center">
-                            <div className="flex shrink-0 items-center">
-                                <Link href="/">
-                                    <p className="text-4xl font-bold text-white">
-                                        &lt;/&gt;
-                                    </p>
-                                    <p className="text-4xl font-bold text-white">
-                                        &lt;/&gt;
-                                    </p>
-                                </Link>
-                            </div>
+                                <div className="flex shrink-0 items-center">
+                                    <Link href="/">
+                                        <p className="text-4xl font-bold text-white">
+                                            &lt;/&gt;
+                                        </p>
+                                    </Link>
+                                </div>
 
-                            <div className="hidden space-x-8 text-white sm:-my-px sm:ms-8 sm:flex">
-                                <NavLink
-                                    href={route("dashboard")}
-                                    active={route().current("dashboard")}
-                                    className="text-white"
-                                >
-                                    Dashboard
-                                </NavLink>
-                                {analysis && (
+                                <div className="hidden space-x-8 text-white sm:-my-px sm:ms-8 sm:flex">
                                     <NavLink
-                                        href={route("metrics")}
-                                        active={route().current("metrics")}
+                                        href={route("dashboard")}
+                                        active={route().current("dashboard")}
+                                        className="text-white"
                                     >
-                                        Metrics
+                                        Dashboard
                                     </NavLink>
-                                )}
+                                    {analysis && (
+                                        <NavLink
+                                            href={route("metrics")}
+                                            active={route().current("metrics")}
+                                        >
+                                            Metrics
+                                        </NavLink>
+                                    )}
+                                </div>
                             </div>
                         </div>
-
                         <div className="hidden sm:ms-6 sm:flex sm:items-center ">
                             <div className="relative ms-3">
                                 <Dropdown className="text-black bg-red-500">
@@ -78,25 +71,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                                     <AnimatedTooltip
                                                         items={people}
                                                     />
-                                                    <AnimatedTooltip
-                                                        items={people}
-                                                    />
                                                 </div>
 
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
-                                                    viewBox="0 0 24 24"
-                                                    fill="none"
-                                                    stroke="#ffffff"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                    class="lucide lucide-chevron-down"
-                                                >
-                                                    <path d="m6 9 6 6 6-6" />
-                                                </svg>
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     width="16"
@@ -117,10 +93,12 @@ export default function AuthenticatedLayout({ header, children }) {
 
                                     <Dropdown.Content className="text-black bg-black hover:bg-black">
                                         <Dropdown.Link
-                                            href={route("profile.edit")}
-                                            className="bg-black border-0"
+                                            href={route("logout")}
+                                            method="post"
+                                            as="button"
+                                            className="bg-black"
                                         >
-                                            Profile
+                                            Logout
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -202,9 +180,6 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route("profile.edit")}>
-                                Profile
-                            </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route("logout")}
