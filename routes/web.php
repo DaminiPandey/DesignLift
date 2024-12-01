@@ -45,4 +45,12 @@ Route::get('/{branch}/stats', [RepositoryAnalysisController::class, 'showBranchS
     ->middleware(['auth'])
     ->name('branch.stats');
 
+Route::get('/analysis-progress/{repository}', [RepositoryAnalysisController::class, 'getProgress'])
+    ->middleware(['auth'])
+    ->name('analysis.progress');
+
+Route::get('/deep-analysis-status/{repository}', [RepositoryAnalysisController::class, 'getDeepAnalysisStatus'])
+    ->middleware(['auth'])
+    ->name('deep-analysis.status');
+
 require __DIR__ . '/auth.php';

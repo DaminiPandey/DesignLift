@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -11,6 +11,73 @@ import {
 } from "@/store/slices/analysisSlice";
 import { Switch } from "@headlessui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
+
+const DeepAnalysisStatus = ({ status }) => {
+    const getStatusDisplay = () => {
+        switch (status) {
+            case 'queued':
+                return {
+                    color: 'text-yellow-700',
+                    bgColor: 'bg-yellow-50',
+                    message: 'Deep Analysis Queued',
+                    description: 'Your analysis is in queue and will start soon.'
+                };
+            case 'processing':
+                return {
+                    color: 'text-blue-700',
+                    bgColor: 'bg-blue-50',
+                    message: 'Deep Analysis in Progress',
+                    description: 'We are analyzing your repository in detail. This may take a few minutes.'
+                };
+            case 'completed':
+                return {
+                    color: 'text-green-700',
+                    bgColor: 'bg-green-50',
+                    message: 'Deep Analysis Completed',
+                    description: 'Analysis is complete. Results will be displayed shortly.'
+                };
+            case 'failed':
+                return {
+                    color: 'text-red-700',
+                    bgColor: 'bg-red-50',
+                    message: 'Deep Analysis Failed',
+                    description: 'There was an error during analysis. Please try again.'
+                };
+            default:
+                return {
+                    color: 'text-gray-700',
+                    bgColor: 'bg-gray-50',
+                    message: 'Initializing Deep Analysis',
+                    description: 'Preparing to analyze your repository.'
+                };
+        }
+    };
+
+    const statusInfo = getStatusDisplay();
+
+    return (
+        <div className={`mt-6 p-4 rounded-lg ${statusInfo.bgColor}`}>
+            <div className="flex items-center">
+                {status === 'processing' && (
+                    <div className="mr-3">
+                        <svg className="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                )}
+                <div>
+                    <h3 className={`text-sm font-medium ${statusInfo.color}`}>
+                        {statusInfo.message}
+                    </h3>
+                    <p className={`mt-1 text-sm ${statusInfo.color} opacity-75`}>
+                        {statusInfo.description}
+                    </p>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default function Dashboard() {
     const dispatch = useDispatch();
@@ -24,6 +91,23 @@ export default function Dashboard() {
     const [currentPage, setCurrentPage] = useState(1);
     const [analyzingBranch, setAnalyzingBranch] = useState(null);
     const branchesPerPage = 10;
+    const [isDeepAnalysis, setIsDeepAnalysis] = useState(false);
+    const [analysisProgress, setAnalysisProgress] = useState(0);
+    const [isAnalyzing, setIsAnalyzing] = useState(false);
+    const progressInterval = useRef(null);
+    const [deepAnalysisStatus, setDeepAnalysisStatus] = useState(null);
+    const pollInterval = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            if (progressInterval.current) {
+                clearInterval(progressInterval.current);
+            }
+            if (pollInterval.current) {
+                clearInterval(pollInterval.current);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         const fetchBranches = async () => {
@@ -83,6 +167,42 @@ export default function Dashboard() {
         }
     };
 
+    const checkProgress = async (repoName) => {
+        try {
+            const response = await axios.get(`/analysis-progress/${repoName}`);
+            const progress = response.data.progress;
+            setAnalysisProgress(progress);
+
+            if (progress >= 100) {
+                clearInterval(progressInterval.current);
+                setIsAnalyzing(false);
+            }
+        } catch (error) {
+            console.error('Failed to fetch progress:', error);
+        }
+    };
+
+    const checkDeepAnalysisStatus = async (repoName) => {
+        try {
+            const response = await axios.get(`/deep-analysis-status/${repoName}`);
+            const { status, result, error } = response.data;
+
+            setDeepAnalysisStatus({ status });
+
+            if (status === 'completed' && result) {
+                clearInterval(pollInterval.current);
+                setTimeout(() => {
+                    dispatch(analysisSuccess(result));
+                }, 1000);
+            } else if (status === 'failed') {
+                clearInterval(pollInterval.current);
+                dispatch(analysisError(error || 'Deep analysis failed'));
+            }
+        } catch (error) {
+            console.error('Failed to check deep analysis status:', error);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch(startAnalysis());
@@ -93,24 +213,24 @@ export default function Dashboard() {
                 .replace(".git", "")
                 .split("/");
 
-            if (urlParts.length !== 2) {
-                throw new Error(
-                    "Invalid GitHub URL format. Please use: https://github.com/owner/repository"
-                );
-            }
-
             const [owner, repo] = urlParts;
             const repoFullName = `${owner}/${repo}`;
 
             const response = await axios.post("/analyze", {
                 repository_name: repoFullName,
+                deep_analysis: isDeepAnalysis
             });
 
             dispatch(analysisSuccess(response.data.analysis));
+
+            if (response.data.analysis.deep_analysis_pending) {
+                setDeepAnalysisStatus({ status: 'queued' });
+                pollInterval.current = setInterval(() => {
+                    checkDeepAnalysisStatus(repoFullName);
+                }, 2000);
+            }
         } catch (error) {
-            dispatch(
-                analysisError(error.response?.data?.message || error.message)
-            );
+            dispatch(analysisError(error.response?.data?.message || error.message));
         }
     };
 
@@ -164,6 +284,25 @@ export default function Dashboard() {
                                         Example:
                                         https://github.com/laravel/laravel
                                     </p>
+                                </div>
+
+                                <div className="flex items-center space-x-2 mt-4">
+                                    <Switch
+                                        checked={isDeepAnalysis}
+                                        onChange={setIsDeepAnalysis}
+                                        className={`${
+                                            isDeepAnalysis ? 'bg-indigo-600' : 'bg-gray-200'
+                                        } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
+                                    >
+                                        <span
+                                            className={`${
+                                                isDeepAnalysis ? 'translate-x-6' : 'translate-x-1'
+                                            } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+                                        />
+                                    </Switch>
+                                    <span className="text-sm text-gray-600">
+                                        Enable Deep Analysis
+                                    </span>
                                 </div>
 
                                 <button
@@ -476,6 +615,35 @@ export default function Dashboard() {
                                 </div>
                             </>
                         )}
+                    </div>
+                </div>
+            )}
+
+            {isAnalyzing && (
+                <div className="mt-4">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-gray-700">
+                            Analyzing Repository...
+                        </span>
+                        <span className="text-sm font-medium text-gray-700">
+                            {Math.round(analysisProgress)}%
+                        </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div 
+                            className="bg-green-600 h-2.5 rounded-full transition-all duration-500"
+                            style={{ width: `${analysisProgress}%` }}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {isDeepAnalysis && deepAnalysisStatus && (
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                        <div className="p-6">
+                            <DeepAnalysisStatus status={deepAnalysisStatus.status} />
+                        </div>
                     </div>
                 </div>
             )}

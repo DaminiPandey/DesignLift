@@ -26,9 +26,15 @@ class RepositoryAnalysisController extends Controller
     {
         $request->validate([
             'repository_name' => 'required|string',
+            'deep_analysis' => 'boolean'
         ]);
 
         try {
+            // Increase timeout for deep analysis
+            if ($request->deep_analysis) {
+                set_time_limit(300); // 5 minutes
+            }
+
             // Fetch repository details from GitHub
             $repoDetails = $this->githubService->getRepositoryDetails($request->repository_name);
 
@@ -45,9 +51,10 @@ class RepositoryAnalysisController extends Controller
                 ]
             );
 
-            // Get repository metrics
+            // Get repository metrics with deep analysis flag
             $repoData = $this->githubService->getRepositoryContent(
-                $request->repository_name
+                $request->repository_name,
+                $request->deep_analysis ?? false
             );
 
             Log::info('Repository data received', ['data' => $repoData]);
@@ -99,7 +106,9 @@ class RepositoryAnalysisController extends Controller
                     'average_complexity' => $this->calculateAverageMetric($fileAnalyses, 'complexity_score'),
                     'average_quality' => $this->calculateAverageMetric($fileAnalyses, 'quality_score'),
                     'files_analyzed' => count($fileAnalyses)
-                ]
+                ],
+                'project_type' => $repoData['project_type'],
+                'framework_details' => $repoData['framework_details']
             ];
 
             // Save analysis using the local repository ID
@@ -161,5 +170,16 @@ class RepositoryAnalysisController extends Controller
             'branch' => $branch,
             'analysis' => session()->get("branch_analysis_{$branch}", [])
         ]);
+    }
+
+    public function getProgress($repository)
+    {
+        $progress = $this->githubService->getAnalysisProgress($repository);
+        return response()->json(['progress' => $progress]);
+    }
+
+    public function getDeepAnalysisStatus($repository)
+    {
+        return response()->json($this->githubService->getDeepAnalysisStatus($repository));
     }
 }
