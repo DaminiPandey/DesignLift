@@ -1,6 +1,6 @@
-import { Transition } from '@headlessui/react';
-import { Link } from '@inertiajs/react';
-import { createContext, useContext, useState } from 'react';
+import { Transition } from "@headlessui/react";
+import { Link } from "@inertiajs/react";
+import { createContext, useContext, useState } from "react";
 
 const DropDownContext = createContext();
 
@@ -36,25 +36,25 @@ const Trigger = ({ children }) => {
 };
 
 const Content = ({
-    align = 'right',
-    width = '48',
-    contentClasses = 'py-1 bg-white',
+    align = "right",
+    width = "48",
+    contentClasses = "py-1 bg-black",
     children,
 }) => {
     const { open, setOpen } = useContext(DropDownContext);
 
-    let alignmentClasses = 'origin-top';
+    let alignmentClasses = "origin-top";
 
-    if (align === 'left') {
-        alignmentClasses = 'ltr:origin-top-left rtl:origin-top-right start-0';
-    } else if (align === 'right') {
-        alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
+    if (align === "left") {
+        alignmentClasses = "ltr:origin-top-left rtl:origin-top-right start-0";
+    } else if (align === "right") {
+        alignmentClasses = "ltr:origin-top-right rtl:origin-top-left end-0";
     }
 
-    let widthClasses = '';
+    let widthClasses = "";
 
-    if (width === '48') {
-        widthClasses = 'w-48';
+    if (width === "48") {
+        widthClasses = "w-48";
     }
 
     return (
@@ -86,12 +86,12 @@ const Content = ({
     );
 };
 
-const DropdownLink = ({ className = '', children, ...props }) => {
+const DropdownLink = ({ className = "", children, ...props }) => {
     return (
         <Link
             {...props}
             className={
-                'block w-full px-4 py-2 text-start text-sm leading-5 text-white transition duration-150 rounded-md ease-in-out hover:bg-background-100 active:bg-background-700 focus:outline-none ' +
+                "block w-full px-4 py-2 text-start text-sm leading-5 text-white transition duration-150 rounded-md ease-in-out hover:bg-black active:bg-background-700 focus:outline-none " +
                 className
             }
         >
