@@ -28,14 +28,6 @@ export default function AuthenticatedLayout({ header, children }) {
             image: user?.image,
         },
     ];
-    const people = [
-        {
-            id: 1,
-            name: user?.name,
-            designation: user.email,
-            image: user?.image,
-        },
-    ];
     return (
         <div className="min-h-screen min-w-screen bg-background-0 flex flex-1  flex-col relative">
             <nav className="border-b-[0.5px] border-gray-800 bg-background-0">
