@@ -108,8 +108,7 @@ export default function Dashboard() {
             });
 
             dispatch(analysisSuccess(response.data.analysis));
-            router.visit(route('metrics'));
-
+            router.visit(route("metrics"));
         } catch (error) {
             dispatch(
                 analysisError(error.response?.data?.message || error.message)
@@ -126,13 +125,12 @@ export default function Dashboard() {
     const totalPages = Math.ceil(branches.length / branchesPerPage);
 
     return (
-        <AuthenticatedLayout
-        >
+        <AuthenticatedLayout>
             <Head title="Repository Analysis" />
 
             <div className="py-12 w-full">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-background-50 shadow-sm sm:rounded-lg">
+                    <div className="overflow-hidden">
                         <div className="p-6 text-gray-900">
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div className="space-y-2">
@@ -158,7 +156,6 @@ export default function Dashboard() {
                                             required
                                         />
                                     </div>
-                                    
                                 </div>
 
                                 <button
@@ -170,7 +167,6 @@ export default function Dashboard() {
                                             : ""
                                     }`}
                                 >
-                                    
                                     {loading
                                         ? "Analyzing..."
                                         : "Analyze Repository"}
@@ -356,26 +352,64 @@ export default function Dashboard() {
                                         >
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center space-x-3">
-                                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                                                   class="lucide lucide-git-branch"><line x1="6" x2="6" y1="3" y2="15"/>
-                                                   <circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        width="16"
+                                                        height="16"
+                                                        viewBox="0 0 24 24"
+                                                        fill="none"
+                                                        stroke="gray"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        class="lucide lucide-git-branch"
+                                                    >
+                                                        <line
+                                                            x1="6"
+                                                            x2="6"
+                                                            y1="3"
+                                                            y2="15"
+                                                        />
+                                                        <circle
+                                                            cx="18"
+                                                            cy="6"
+                                                            r="3"
+                                                        />
+                                                        <circle
+                                                            cx="6"
+                                                            cy="18"
+                                                            r="3"
+                                                        />
+                                                        <path d="M18 9a9 9 0 0 1-9 9" />
+                                                    </svg>
                                                     <span className="font-medium text-typography-700">
                                                         {branch.name}
                                                     </span>
                                                 </div>
                                                 <Button
-                                                    onClick={() => analyzeBranch(branch.name)}
+                                                    onClick={() =>
+                                                        analyzeBranch(
+                                                            branch.name
+                                                        )
+                                                    }
                                                     variant="outline"
-                                                    disabled={analyzingBranch === branch.name}
+                                                    disabled={
+                                                        analyzingBranch ===
+                                                        branch.name
+                                                    }
                                                     className={`px-4 py-2 rounded-md focus:ring-0 focus-visible:ring-2 focus-visible:ring-gray-500 text-sm font-medium transition-all duration-200 flex items-center space-x-2 ${
-                                                        analyzingBranch === branch.name
+                                                        analyzingBranch ===
+                                                        branch.name
                                                             ? "bg-gray-50 text-gray-400 cursor-not-allowed border border-gray-200"
-                                                            : branchAnalysis[branch.name]
+                                                            : branchAnalysis[
+                                                                  branch.name
+                                                              ]
                                                             ? "bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200"
                                                             : "bg-background-0 text-typography-700 hover:bg-background-0 hover:border-outline-300 active:border-outline-400 hover:text-typography-900 border border-outline-200 shadow-sm"
                                                     }`}
                                                 >
-                                                    {analyzingBranch === branch.name ? (
+                                                    {analyzingBranch ===
+                                                    branch.name ? (
                                                         <>
                                                             <svg
                                                                 className="animate-spin h-4 w-4 text-gray-400"
@@ -397,26 +431,37 @@ export default function Dashboard() {
                                                                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                                                                 />
                                                             </svg>
-                                                            <span>Analyzing...</span>
+                                                            <span>
+                                                                Analyzing...
+                                                            </span>
                                                         </>
-                                                    ) : branchAnalysis[branch.name] ? (
+                                                    ) : branchAnalysis[
+                                                          branch.name
+                                                      ] ? (
                                                         <>
-                                                            <svg 
-                                                                xmlns="http://www.w3.org/2000/svg" 
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
                                                                 className="h-4 w-4"
-                                                                viewBox="0 0 24 24" 
-                                                                fill="none" 
-                                                                stroke="currentColor" 
+                                                                viewBox="0 0 24 24"
+                                                                fill="none"
+                                                                stroke="currentColor"
                                                                 strokeWidth="2"
                                                             >
-                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                                                                <path
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                    d="M9 5l7 7-7 7"
+                                                                />
                                                             </svg>
-                                                            <span>View Results</span>
+                                                            <span>
+                                                                View Results
+                                                            </span>
                                                         </>
                                                     ) : (
                                                         <>
-                                                          
-                                                            <span>Analyze Branch</span>
+                                                            <span>
+                                                                Analyze Branch
+                                                            </span>
                                                         </>
                                                     )}
                                                 </Button>
