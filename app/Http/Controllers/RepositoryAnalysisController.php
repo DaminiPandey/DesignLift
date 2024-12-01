@@ -29,6 +29,9 @@ class RepositoryAnalysisController extends Controller
         ]);
 
         try {
+            // Store current repository in session
+            session(['current_repository' => $request->repository_name]);
+
             // Fetch repository details from GitHub
             $repoDetails = $this->githubService->getRepositoryDetails($request->repository_name);
 

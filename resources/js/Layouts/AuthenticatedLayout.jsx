@@ -47,6 +47,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                     >
                                         Dashboard
                                     </NavLink>
+                                    <NavLink
+                                        href={route("overview.stats")}
+                                        active={route().current("overview.stats")}
+                                        className="text-white"
+                                    >
+                                        Overview Stats
+                                    </NavLink>
                                     {analysis && (
                                         <NavLink
                                             href={route("metrics")}

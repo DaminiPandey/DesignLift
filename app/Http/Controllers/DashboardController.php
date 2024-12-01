@@ -30,6 +30,10 @@ class DashboardController extends Controller
                 ];
             })->toArray();
 
+            // Store the first repository as current if none selected
+            if (!session('current_repository') && !empty($formattedRepos)) {
+                session(['current_repository' => $formattedRepos[0]['full_name']]);
+            }
 
             return Inertia::render('Dashboard/Index', [
                 'repositories' => $formattedRepos

@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\RepositoryAnalysisController;
 use App\Http\Controllers\MetricsController;
+use App\Http\Controllers\RepositoryStatsController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -48,5 +49,13 @@ Route::get('/metrics', [MetricsController::class, 'index'])
 Route::get('/{branch}/stats', [RepositoryAnalysisController::class, 'showBranchStats'])
     ->middleware(['auth'])
     ->name('branch.stats');
+
+Route::get('/overview-stats', [RepositoryStatsController::class, 'index'])
+    ->middleware(['auth'])
+    ->name('overview.stats');
+
+Route::get('/api/repository-stats', [RepositoryStatsController::class, 'getStats'])
+    ->middleware(['auth'])
+    ->name('api.repository-stats');
 
 require __DIR__ . '/auth.php';
