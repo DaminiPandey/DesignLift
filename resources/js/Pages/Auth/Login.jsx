@@ -5,7 +5,7 @@ export default function Login() {
         <div className="min-h-screen flex items-center justify-center bg-background-0">
             <Head title="Login" />
 
-            <div className="max-w-md w-full space-y-6 p-8 rounded-lg shadow bg-background-50">
+            <div className="max-w-md w-full space-y-5 p-8 rounded-lg shadow bg-background-50">
                 <div className="flex justify-center">
                     <svg className="w-10 h-10" fill="white" viewBox="0 0 20 20">
                         <path
@@ -16,7 +16,7 @@ export default function Login() {
                     </svg>
                 </div>
                 <div>
-                    <h2 className="mt-6 text-center text-[28px] font-extrabold text-white">
+                    <h2 className="mt-6 text-center text-[28px] font-extrabold text-typography-600">
                         Sign in to your account
                     </h2>
                 </div>
