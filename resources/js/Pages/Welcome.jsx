@@ -24,7 +24,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     <>
                                         <div className="flex shrink-0 items-center">
                                             <Link href="/">
-                                                <p className="text-4xl font-bold">
+                                                <p className="text-4xl font-bold text-white">
                                                     &lt;/&gt;
                                                 </p>
                                             </Link>
