@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\RepositoryAnalysisController;
 use App\Http\Controllers\MetricsController;
 use App\Http\Controllers\RepositoryStatsController;
+use App\Http\Controllers\PRAnalysisController;
+use App\Http\Controllers\ContributorAnalysisController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -57,5 +59,14 @@ Route::get('/overview-stats', [RepositoryStatsController::class, 'index'])
 Route::get('/api/repository-stats', [RepositoryStatsController::class, 'getStats'])
     ->middleware(['auth'])
     ->name('api.repository-stats');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pr-analysis', [PRAnalysisController::class, 'index'])->name('pr.analysis');
+    Route::get('/api/pull-requests', [PRAnalysisController::class, 'getPullRequests']);
+    Route::post('/api/analyze-pr/{prNumber}', [PRAnalysisController::class, 'analyzePR']);
+    Route::get('/contributors', [ContributorAnalysisController::class, 'index'])->name('contributors');
+    Route::get('/api/contributors', [ContributorAnalysisController::class, 'getContributors']);
+    Route::post('/api/analyze-contributor/{username}', [ContributorAnalysisController::class, 'analyzeContributor']);
+});
 
 require __DIR__ . '/auth.php';
