@@ -54,6 +54,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                     >
                                         Overview Stats
                                     </NavLink>
+                                    <NavLink
+                                        href={route("pr.analysis")}
+                                        active={route().current("pr.analysis")}
+                                        className="text-white"
+                                    >
+                                        PR Analysis
+                                    </NavLink>
                                     {analysis && (
                                         <NavLink
                                             href={route("metrics")}
@@ -62,6 +69,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                             Metrics
                                         </NavLink>
                                     )}
+                                    <NavLink
+                                        href={route("contributors")}
+                                        active={route().current("contributors")}
+                                        className="text-white"
+                                    >
+                                        Contributors
+                                    </NavLink>
                                 </div>
                             </div>
                         </div>

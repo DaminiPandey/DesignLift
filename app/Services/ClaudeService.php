@@ -89,6 +89,68 @@ class ClaudeService
         }
     }
 
+    public function analyzeContribution($data)
+    {
+        try {
+            $prompt = <<<EOT
+            Analyze this contributor's activity and provide ONLY a JSON response in the following format, with no additional text:
+            {
+                "feedback": "<detailed feedback about the contributor's work quality, impact, and consistency>"
+            }
+
+            Contributor data to analyze:
+            - Total commits: {$data['commits']}
+            - Quality score: {$data['quality_score']}/10
+            - Impact score: {$data['impact_score']}/10
+            - Consistency score: {$data['consistency_score']}/10
+            EOT;
+
+            $response = Http::withHeaders([
+                'x-api-key' => $this->apiKey,
+                'anthropic-version' => '2023-06-01',
+                'content-type' => 'application/json',
+            ])->post($this->apiUrl, [
+                'model' => 'claude-3-opus-20240229',
+                'max_tokens' => 1000,
+                'messages' => [
+                    [
+                        'role' => 'user',
+                        'content' => $prompt
+                    ]
+                ]
+            ]);
+
+            if ($response->successful()) {
+                $responseData = $response->json();
+                
+                if (isset($responseData['content'][0]['text'])) {
+                    $analysisData = json_decode($responseData['content'][0]['text'], true);
+                    
+                    if (json_last_error() === JSON_ERROR_NONE && isset($analysisData['feedback'])) {
+                        return $analysisData['feedback'];
+                    }
+                }
+
+                Log::warning('Invalid Claude response format for contribution analysis', [
+                    'response' => $responseData
+                ]);
+            } else {
+                Log::error('Claude API Error during contribution analysis', [
+                    'status' => $response->status(),
+                    'response' => $response->json()
+                ]);
+            }
+
+            return "Unable to generate detailed feedback at this time.";
+
+        } catch (\Exception $e) {
+            Log::error('Error in analyzeContribution', [
+                'error' => $e->getMessage()
+            ]);
+            return "An error occurred while analyzing the contribution.";
+        }
+    }
+
     protected function buildPrompt($codeContent)
     {
         return <<<EOT
